@@ -1,4 +1,4 @@
-var Board = {
+var GameLogic = {
   squares: [['','',''],
             ['','',''],
             ['','','']],
@@ -6,20 +6,27 @@ var Board = {
   placeMove: function(event) {
     var moveRow = event.target.dataset.row;
     var moveCol = event.target.dataset.col;
-    console.log(moveRow, moveCol);
-    var moveLocation = Board.squares[moveRow][moveCol];
-    if (moveLocation === '') { // space free
-      Board.squares[moveRow][moveCol] = (Board.whoseTurn());
-      Board.displayBoard();
-        if (Board.checkWin(Board.whoseTurn()) === true) {
-        swal("And the " +Board.whoseTurn()+ "'s have it!", "Rematch?", "success");
-        Board.resetBoard();
+    var moveLocation = GameLogic.squares[moveRow][moveCol];
 
+    if (moveLocation === '') { // space is free
+      GameLogic.squares[moveRow][moveCol] = (GameLogic.whoseTurn());
+      GameUI.displayBoard();
+        if (GameLogic.checkWin(GameLogic.whoseTurn()) === true) {
+        swal("And the " +GameLogic.whoseTurn()+ "'s have it!", "Rematch?", "success");
+        GameLogic.resetBoard();
         } else {
-          Board.moves += 1;
+          GameLogic.moves += 1;
+          if (GameLogic.moves > 8) {
+            swal({
+                    title: "Hmm..",
+                    text: "Looks like nobody won that time... play again?",
+                    imageUrl: "images/thinkingface.png"
+            });
+            GameLogic.resetBoard();
+          }
         }
-      console.log("It's player " + Board.whoseTurn() + "'s turn now");
-    } else {
+      console.log("It's player " + GameLogic.whoseTurn() + "'s turn now");
+    } else {  // space is not free
           swal({
                   title: "Nope!",
                   text: "That space is taken...",
@@ -50,7 +57,6 @@ var Board = {
           return false;
         }
   },
-
   checkWinDiagonal: function(player) {
     if (this.checkCell(0,0) === player && this.checkCell(1,1) === player && this.checkCell(2,2) === player ||
         this.checkCell(0,2) === player && this.checkCell(1,1) === player && this.checkCell(2,0) === player ) {
@@ -59,40 +65,39 @@ var Board = {
           return false;
         }
   },
-
   checkCell: function(vertical, horizontal) {
     return this.squares[vertical][horizontal];
   },
-
-
   whoseTurn: function() {
-    if (Board.moves %2 === 0) {
+    if (GameLogic.moves %2 === 0) {
       return 'X';
     } else {
       return 'O';
     }
   },
 
-  displayBoard: function() {
-    for (var i = 0; i < Board.squares.length ; i++) {
-      for (var j = 0; j< Board.squares[0].length; j++) {
-      var move = Board.squares[i][j];
-      $('div[data-row="' +[i]+'"][data-col="' +[j]+'"]').text(move);
-      }
-    }
-  },
   resetBoard: function() {
     this.moves = 0;
     this.squares = [['','',''],
               ['','',''],
               ['','','']];
-    this.displayBoard();
+    GameUI.displayBoard();
   }
 
 };
 
+var GameUI = {
+  displayBoard: function() {
+    for (var i = 0; i < GameLogic.squares.length ; i++) {
+      for (var j = 0; j< GameLogic.squares[0].length; j++) {
+      var move = GameLogic.squares[i][j];
+      $('div[data-row="' +[i]+'"][data-col="' +[j]+'"]').text(move);
+      }
+    }
+  }
+};
+
 
 $(document).ready(  function()  {
-  $('.board').on('click', Board.placeMove);
-
+  $('.board').on('click', GameLogic.placeMove);
 });
