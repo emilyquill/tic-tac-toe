@@ -8,18 +8,22 @@ h1 {
   text-align: center;
 
 }
+
+body {
+  background-color: white;
+
+}
 .board {
   margin: 0 auto;
   width: 300px;
   height: 300px;
   padding: 6px;
-  background-color: grey;
-  border-radius: 20px;
+  background-color: red;
 
 }
 
 .board>div {
-  background-color: grey;
+  background-color: red;
   height: 90px;
   padding-left: 3px;
   padding-top: 1px;
@@ -34,7 +38,6 @@ h1 {
   text-align: center;
   font-size: 80px;
   line-height: 90px;
-  border-radius: 15px;
   font-family: 'Swanky and Moo Moo', cursive;
 }
 

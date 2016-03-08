@@ -1,0 +1,48 @@
+@import url(https://fonts.googleapis.com/css?family=Varela+Round);
+@import url(https://fonts.googleapis.com/css?family=Love+Ya+Like+A+Sister);
+
+body {
+  background-color: #27A588;
+}
+
+h1 {
+  text-align: center;;
+  font-family: 'Love Ya Like A Sister', cursive;
+  font-size: 60px;
+  color: white;
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  background-color: green;
+  width: 400px;
+  height: 400px;
+  margin: 0 auto;
+}
+
+.board>div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #27A588;
+  flex-grow: 1;
+  flex-basis: 100%;
+}
+
+.board>div>div {
+  flex-grow: 1;
+  margin: 5px;
+  background-color: #27A588;
+  flex-basis: 100%;
+  text-align: center;
+  font-size: 80px;
+  color: white;
+  line-height: 125px;
+  font-family: 'Love Ya Like A Sister', cursive;
+  box-shadow: 0px 0px 60px #1D7C66 inset;
+}
+
+.board>div>div:hover {
+  box-shadow: 0px 0px 60px #30CFAA inset;
+}

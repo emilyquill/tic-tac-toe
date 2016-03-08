@@ -10,18 +10,60 @@ var Board = {
     var moveLocation = Board.squares[moveRow][moveCol];
     if (moveLocation === '') { // space free
       Board.squares[moveRow][moveCol] = (Board.whoseTurn());
-      Board.moves += 1;
+      Board.displayBoard();
+        if (Board.checkWin(Board.whoseTurn()) === true) {
+        swal("And the " +Board.whoseTurn()+ "'s have it!", "Rematch?", "success");
+        Board.resetBoard();
+
+        } else {
+          Board.moves += 1;
+        }
       console.log("It's player " + Board.whoseTurn() + "'s turn now");
     } else {
-      alert("Nice try.. that place is taken..");
+          swal({
+                  title: "Nope!",
+                  text: "That space is taken...",
+                  imageUrl: "images/facewithrollingeyes.png"
+          });
     }
-    Board.displayBoard();
-    // 3. Calculate if there is a winner
-
   },
-  checkWinRow: function() {},
-  checkWinColumn: function() {},
-  checkWinDiagonal: function() {},
+
+  checkWin: function(player) {
+    return this.checkWinRow(player) || this.checkWinColumn(player) || this.checkWinDiagonal(player);
+  },
+  checkWinRow: function(player) {
+    if (this.checkCell(0,0) === player && this.checkCell(0,1) === player && this.checkCell(0,2) === player ||
+        this.checkCell(1,0) === player && this.checkCell(1,1) === player && this.checkCell(1,2) === player ||
+        this.checkCell(2,0) === player && this.checkCell(2,1) === player && this.checkCell(2,2) === player ) {
+          return true;
+        } else {
+          return false;
+        }
+  },
+
+  checkWinColumn: function(player) {
+    if (this.checkCell(0,0) === player && this.checkCell(1,0) === player && this.checkCell(2,0) === player ||
+        this.checkCell(0,1) === player && this.checkCell(1,1) === player && this.checkCell(2,1) === player ||
+        this.checkCell(0,2) === player && this.checkCell(1,2) === player && this.checkCell(2,2) === player ) {
+          return true;
+        } else {
+          return false;
+        }
+  },
+
+  checkWinDiagonal: function(player) {
+    if (this.checkCell(0,0) === player && this.checkCell(1,1) === player && this.checkCell(2,2) === player ||
+        this.checkCell(0,2) === player && this.checkCell(1,1) === player && this.checkCell(2,0) === player ) {
+          return true;
+        } else {
+          return false;
+        }
+  },
+
+  checkCell: function(vertical, horizontal) {
+    return this.squares[vertical][horizontal];
+  },
+
 
   whoseTurn: function() {
     if (Board.moves %2 === 0) {
@@ -38,17 +80,19 @@ var Board = {
       $('div[data-row="' +[i]+'"][data-col="' +[j]+'"]').text(move);
       }
     }
-
-
-      //  Board.squares[moveRow][moveCol]
   },
-  displayTurn: function() {},
+  resetBoard: function() {
+    this.moves = 0;
+    this.squares = [['','',''],
+              ['','',''],
+              ['','','']];
+    this.displayBoard();
+  }
 
 };
 
 
 $(document).ready(  function()  {
   $('.board').on('click', Board.placeMove);
-
 
 });
