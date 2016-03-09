@@ -77,9 +77,9 @@ background-color: #27A588;
 }
 
 .O:not(.placed):hover {
-  background-image: url('/Users/Emily/Projects/Project-0-TicTacToe/images/O.png');
+  background-image: url('../images/O.png');
 }
 
 .X:not(.placed):hover {
-  background-image: url('/Users/Emily/Projects/Project-0-TicTacToe/images/X.png');
+  background-image: url('../images/X.png');
 }
