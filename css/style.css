@@ -15,7 +15,6 @@ h1 {
 .board {
   display: flex;
   flex-direction: column;
-  background-color: green;
   width: 400px;
   height: 400px;
   margin: 0 auto;
@@ -45,4 +44,12 @@ h1 {
 
 .board>div>div:hover {
   box-shadow: 0px 0px 60px #30CFAA inset;
+}
+
+.O:not(.placed):hover {
+  background-image: url('/Users/Emily/Projects/Project-0-TicTacToe/images/O.png');
+}
+
+.X:not(.placed):hover {
+  background-image: url('/Users/Emily/Projects/Project-0-TicTacToe/images/X.png');
 }
