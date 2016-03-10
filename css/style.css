@@ -83,3 +83,7 @@ background-color: #27A588;
 .X:not(.placed):hover {
   background-image: url('../images/X.png');
 }
+
+.highlight {
+  box-shadow: 0px 0px 60px #30CFAA inset;
+}

@@ -17,15 +17,14 @@ var GameLogic = {
     placeMove: function(moveRow, moveCol) {
         var moveLocation = GameLogic.squares[moveRow][moveCol];
         GameLogic.playerMoves[GameLogic.whoseTurn()].push(moveRow+moveCol);
-        console.log("X Moves: " + GameLogic.playerMoves.X);
-        console.log("O Moves: " + GameLogic.playerMoves.O);
         if (moveLocation === '') { // space is free
             GameLogic.squares[moveRow][moveCol] = (GameLogic.whoseTurn());
             GameUI.displayBoard();
             if (GameLogic.checkWin(GameLogic.whoseTurn()) === true) {
                 GameLogic.playerWins[GameLogic.whoseTurn()] += 1;
                 GameLogic.winningMoves();
-                setTimeout(GameLogic.finishGame, 3000);
+                GameUI.freezeBoard();
+                setTimeout(GameLogic.finishGame, 2000);
             } else {
                 GameLogic.moves += 1;
                 GameUI.showCurrentPlayer();
@@ -34,7 +33,6 @@ var GameLogic = {
                         title: "Hmm..",
                         text: "Looks like nobody won that time... play again?",
                         imageUrl: "images/thinkingface.png",
-                        confirmButtonColor: "#27A588",
                         confirmButtonText: "Ok, let's do it.."
                     });
                     GameLogic.resetBoard();
@@ -45,7 +43,7 @@ var GameLogic = {
                 title: "Nope!",
                 text: "That space is taken...",
                 imageUrl: "images/facewithrollingeyes.png",
-                confirmButtonColor: "#27A588"
+                confirmButtonText: "My bad"
             });
         }
     },
@@ -140,12 +138,6 @@ var GameLogic = {
 };
 
 
-
-
-
-
-
-
 var GameUI = {
     showCurrentPlayer: function() {
         var classToAdd = GameLogic.whoseTurn();
@@ -155,10 +147,17 @@ var GameUI = {
     getMove: function(event) {
         var moveRow = event.target.dataset.row;
         var moveCol = event.target.dataset.col;
+
+        if ( $('.board>div>div').hasClass('freeze') ) {
+          // bail out, don't place move
+        } else {
         GameLogic.placeMove(moveRow, moveCol);
+        }
+
     },
     displayBoard: function() {
-      $('.board>div>div').removeClass('animated infinite tada');
+      swal.setDefaults({ confirmButtonColor: '#27A588' });
+      $('.board>div>div').removeClass('animated infinite tada highlight freeze');
         for (var i = 0; i < GameLogic.squares.length; i++) {
             for (var j = 0; j < GameLogic.squares[0].length; j++) {
                 var move = GameLogic.squares[i][j];
@@ -176,6 +175,9 @@ var GameUI = {
         $('.XScore').text("( " + GameLogic.playerWins.X + " )");
         $('.OScore').text("( " + GameLogic.playerWins.O + " )");
     },
+    freezeBoard: function() {
+      $('.board>div>div').addClass('freeze');
+    },
     highlightCells: function(cell1, cell2, cell3) {
       var cell1Row = cell1.slice(0,1);
       var cell1Col = cell1.slice(1,2);
@@ -183,12 +185,12 @@ var GameUI = {
       var cell2Col = cell2.slice(1,2);
       var cell3Row = cell3.slice(0,1);
       var cell3Col = cell3.slice(1,2);
-      $('div[data-row="' + cell1Row + '"][data-col="' + cell1Col + '"]').addClass('animated infinite tada');
-      $('div[data-row="' + cell2Row + '"][data-col="' + cell2Col + '"]').addClass('animated infinite tada');
-      $('div[data-row="' + cell3Row + '"][data-col="' + cell3Col + '"]').addClass('animated infinite tada');
+      $('div[data-row="' + cell1Row + '"][data-col="' + cell1Col + '"]').addClass('animated infinite tada highlight');
+      $('div[data-row="' + cell2Row + '"][data-col="' + cell2Col + '"]').addClass('animated infinite tada highlight');
+      $('div[data-row="' + cell3Row + '"][data-col="' + cell3Col + '"]').addClass('animated infinite tada highlight');
     }
 };
 $(document).ready(function() {
     GameLogic.resetBoard();
-    $('.board').on('click', GameUI.getMove);
+    $('.board>div>div').on('click', GameUI.getMove);
 });
