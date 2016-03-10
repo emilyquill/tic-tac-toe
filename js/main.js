@@ -1,8 +1,8 @@
-var GameLogic = {
-    squares: [
-        ['', '', ''],
-        ['', '', ''],
-        ['', '', '']
+var GameLogic = { // Object for all 'Model' parts of the game
+    board: [
+            ['', '', ''],
+            ['', '', ''],
+            ['', '', '']
     ],
     moves: 0,
     playerWins: {
@@ -13,18 +13,17 @@ var GameLogic = {
         'X': [],
         'O': []
     },
-
     placeMove: function(moveRow, moveCol) {
-        var moveLocation = GameLogic.squares[moveRow][moveCol];
+        var moveLocation = GameLogic.board[moveRow][moveCol]; // Find click location in corresponding array
         GameLogic.playerMoves[GameLogic.whoseTurn()].push(moveRow+moveCol);
         if (moveLocation === '') { // space is free
-            GameLogic.squares[moveRow][moveCol] = (GameLogic.whoseTurn());
+            GameLogic.board[moveRow][moveCol] = (GameLogic.whoseTurn());
             GameUI.displayBoard();
             if (GameLogic.checkWin(GameLogic.whoseTurn()) === true) {
                 GameLogic.playerWins[GameLogic.whoseTurn()] += 1;
                 GameLogic.winningMoves();
                 GameUI.freezeBoard();
-                setTimeout(GameLogic.finishGame, 2000);
+                setTimeout(GameLogic.showGameWon, 2000);
             } else {
                 GameLogic.moves += 1;
                 GameUI.showCurrentPlayer();
@@ -78,7 +77,7 @@ var GameLogic = {
         }
     },
     getCell: function(vertical, horizontal) {
-        return this.squares[vertical][horizontal];
+        return this.board[vertical][horizontal];
     },
     whoseTurn: function() {
         if (this.moves % 2 === 0) {
@@ -89,7 +88,7 @@ var GameLogic = {
     },
     resetBoard: function() {
         this.moves = 0;
-        this.squares = [
+        this.board = [
             ['', '', ''],
             ['', '', ''],
             ['', '', '']
@@ -129,27 +128,34 @@ var GameLogic = {
           GameUI.highlightCells('02', '11', '20');
         }
       },
-      finishGame: function() {
-        swal("And the " + GameLogic.whoseTurn() + "'s have it!", "Rematch?", "success");
+      showGameWon: function() {
+        swal({type: "success", title: "And the " + GameLogic.whoseTurn() + "'s have it!", text:"Rematch?"},
+              function(){
+                          $('.board').addClass('animated bounceOutRight');
+                          setTimeout(GameLogic.resetGame, 900); });
+      },
+      resetGame: function() {
         GameUI.displayScore();
         GameLogic.winningMoves();
         GameLogic.resetBoard();
+        $('.board').removeClass('animated bounceOutRight');
+        $('.board').addClass('animated bounceInLeft');
+
       }
 };
 
 
-var GameUI = {
-    showCurrentPlayer: function() {
+var GameUI = { // Object for all 'view' parts of the game
+    showCurrentPlayer: function() { // Show X or O depending on whose turn it is
         var classToAdd = GameLogic.whoseTurn();
         $('.board>div>div').removeClass('X').removeClass('O');
         $('.board>div>div').addClass(classToAdd);
     },
-    getMove: function(event) {
+    getMove: function(event) { // Gets the move and passes it to be placed
         var moveRow = event.target.dataset.row;
         var moveCol = event.target.dataset.col;
-
         if ( $('.board>div>div').hasClass('freeze') ) {
-          // bail out, don't place move
+          // If the game is over: bail out, don't place move
         } else {
         GameLogic.placeMove(moveRow, moveCol);
         }
@@ -158,9 +164,9 @@ var GameUI = {
     displayBoard: function() {
       swal.setDefaults({ confirmButtonColor: '#27A588' });
       $('.board>div>div').removeClass('animated infinite tada highlight freeze');
-        for (var i = 0; i < GameLogic.squares.length; i++) {
-            for (var j = 0; j < GameLogic.squares[0].length; j++) {
-                var move = GameLogic.squares[i][j];
+        for (var i = 0; i < GameLogic.board.length; i++) {
+            for (var j = 0; j < GameLogic.board[0].length; j++) {
+                var move = GameLogic.board[i][j];
                 $('div[data-row="' + [i] + '"][data-col="' + [j] + '"]').text(move);
                 if (move !== '') {
                     $('div[data-row="' + [i] + '"][data-col="' + [j] + '"]').addClass('placed');
