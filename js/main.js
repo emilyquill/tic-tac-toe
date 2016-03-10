@@ -132,7 +132,7 @@ var GameLogic = { // Object for all 'Model' parts of the game
         swal({type: "success", title: "And the " + GameLogic.whoseTurn() + "'s have it!", text:"Rematch?"},
               function(){
                           $('.board').addClass('animated bounceOutRight');
-                          setTimeout(GameLogic.resetGame, 900); });
+                          setTimeout(GameLogic.resetGame, 800); });
       },
       resetGame: function() {
         GameUI.displayScore();
@@ -197,6 +197,5 @@ var GameUI = { // Object for all 'view' parts of the game
     }
 };
 $(document).ready(function() {
-    GameLogic.resetBoard();
     $('.board>div>div').on('click', GameUI.getMove);
 });
