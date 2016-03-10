@@ -1,12 +1,12 @@
 # Project 0
-## Emily Quill
+#### Emily Quill
 
-Check it out [here](https://emilyquill.github.io/Tic-Tac-Toe).
+Check it out [here](https://emilyquill.github.io/tic-tac-toe).
 
-### Libraries Used
+## Libraries Used
 
-* [SweetAlert](http://t4t5.github.io/sweetalert/) -- Credit: Joel
-* [Animate.css](https://github.com/daneden/animate.css) -- Credit: Google
+* [SweetAlert](http://t4t5.github.io/sweetalert/)  -  Credit: Joel
+* [Animate.css](https://github.com/daneden/animate.css)  -  Credit: Google
 
 ## Functionality
 
@@ -18,4 +18,4 @@ Check it out [here](https://emilyquill.github.io/Tic-Tac-Toe).
 
 ## Code Structure
 
-Encapsulated the game logic in one object "GameLogic", whilst another object "GameUI" deals with the views.
+Encapsulated game logic in one object "GameLogic", whilst a second object "GameUI" deals with the views. Initialised with the documentReady function using the click handler.  

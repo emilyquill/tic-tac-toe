@@ -33,8 +33,11 @@ var GameLogic = { // Object for all 'Model' parts of the game
                         text: "Looks like nobody won that time... play again?",
                         imageUrl: "images/thinkingface.png",
                         confirmButtonText: "Ok, let's do it.."
-                    });
-                    GameLogic.resetBoard();
+                    },
+                          function(){
+                                      $('.board').addClass('animated bounceOutRight');
+                                      setTimeout(GameLogic.resetGame, 800); });
+                    // GameLogic.resetBoard();
                 }
             }
         } else { // space is not free
